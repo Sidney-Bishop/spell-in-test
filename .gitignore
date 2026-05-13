@@ -18,3 +18,7 @@ env/
 # Environment
 .env
 .env.local
+
+
+# Test data
+data/responses.jsonl

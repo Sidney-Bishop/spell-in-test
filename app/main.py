@@ -16,6 +16,7 @@ from app.models import (
     SubmitRequest,
 )
 from app.sessions import store
+from app.storage import save_session
 
 # Project paths.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -87,6 +88,10 @@ def submit_answer(body: SubmitRequest):
     )
     if result == "complete":
         raise HTTPException(status_code=409, detail="Session already complete")
+
+    # If this submission completed the test, persist the record.
+    if session.is_complete:
+        save_session(session)
 
     score = session.score()
     return SubmissionResult(
