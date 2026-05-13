@@ -20,6 +20,8 @@ class SubmitRequest(BaseModel):
     session_id: str
     submitted: str = Field(..., max_length=200)
     response_time_ms: int | None = Field(default=None, ge=0, le=600_000)
+    blur_count: int = Field(default=0, ge=0, le=1000)
+    time_hidden_ms: int = Field(default=0, ge=0, le=3_600_000)
 
 
 # --- Responses ---

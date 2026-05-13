@@ -85,7 +85,10 @@ def submit_answer(body: SubmitRequest):
         session,
         submitted=body.submitted,
         response_time_ms=body.response_time_ms,
+        blur_count=body.blur_count,
+        time_hidden_ms=body.time_hidden_ms,
     )
+
     if result == "complete":
         raise HTTPException(status_code=409, detail="Session already complete")
 

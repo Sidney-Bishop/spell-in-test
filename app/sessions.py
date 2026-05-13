@@ -22,6 +22,7 @@ from app.items import ITEMS, get_item
 # Tunables. Worth promoting to config later, but inline for now.
 SESSION_IDLE_TIMEOUT = timedelta(minutes=30)
 RANDOMISE_ORDER = True  # If False, items are served in canonical (id) order.
+ITEMS_PER_SESSION = 2  # Set to None to use all available items.
 
 
 @dataclass
@@ -32,7 +33,9 @@ class Response:
     submitted: str
     correct: bool
     submitted_at: datetime
-    response_time_ms: int | None = None  # populated by the route handler
+    response_time_ms: int | None = None
+    blur_count: int = 0
+    time_hidden_ms: int = 0
 
 
 @dataclass
@@ -86,6 +89,8 @@ class SessionStore:
         item_ids = [item["id"] for item in ITEMS]
         if RANDOMISE_ORDER:
             random.shuffle(item_ids)
+        if ITEMS_PER_SESSION is not None:
+            item_ids = item_ids[:ITEMS_PER_SESSION]
 
         session = Session(id=str(uuid.uuid4()), item_ids=item_ids)
         self._sessions[session.id] = session
@@ -101,7 +106,12 @@ class SessionStore:
         return session
 
     def submit(
-        self, session: Session, submitted: str, response_time_ms: int | None = None
+        self,
+        session: Session,
+        submitted: str,
+        response_time_ms: int | None = None,
+        blur_count: int = 0,
+        time_hidden_ms: int = 0,
     ) -> tuple[Literal["ok"], Response] | tuple[Literal["complete"], None]:
         """Score and record an answer for the session's current question.
 
@@ -125,7 +135,10 @@ class SessionStore:
             correct=correct,
             submitted_at=datetime.now(timezone.utc),
             response_time_ms=response_time_ms,
+            blur_count=blur_count,
+            time_hidden_ms=time_hidden_ms,
         )
+        
         session.responses.append(response)
         session.current_index += 1
         session.touch()
