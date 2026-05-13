@@ -82,21 +82,35 @@ The combined defences (time limit + paste block + spell-check attributes + visib
 
 ### 5.1 Frontend
 
-- **T-1.** Vanilla HTML, CSS, and JavaScript. No framework (Next.js, React, etc.) in this version. A framework migration may be considered post-launch but is explicitly out of scope here.
-- **T-2.** Hosted on **Netlify** (or equivalent static host with serverless function support).
-- **T-3.** Mobile-first responsive design. Large touch targets (minimum 44×44 px), large input field, comfortable text size.
+- **T-1.** Vanilla HTML, CSS, and JavaScript in the browser. No frontend framework (React, Vue, etc.). HTML is rendered server-side from Jinja2 templates; the browser receives plain HTML/CSS/JS with no build step.
+- **T-2.** Mobile-first responsive design. Large touch targets (minimum 44×44 px), large input field, comfortable text size (≥18 px body).
+- **T-3.** Client-side JavaScript handles only: per-question timer countdown, paste/drop/context-menu blocking, tab-visibility logging, and form submission. All scoring logic is server-side.
 
 ### 5.2 Backend
 
-- **T-4.** A single **serverless function** (Netlify Function or Cloudflare Worker — TBD) handles:
-  1. Turnstile token verification.
-  2. Rate limiting and honeypot check.
+- **T-4.** **Python** with **FastAPI** as the web framework, served by **Uvicorn** (ASGI server). Single application; no separate "serverless function" tier.
+- **T-5.** Templating via **Jinja2**, integrated with FastAPI. Templates live in `templates/`, static assets (CSS, JS) in `static/`.
+- **T-6.** Python version: **>=3.12**. Dependencies managed by **uv** via `pyproject.toml` and `uv.lock`.
+- **T-7.** FastAPI routes handle, on each submission:
+  1. Cloudflare Turnstile token verification.
+  2. Honeypot field check and rate-limit check.
   3. Server-side scoring against the answer key.
-  4. Writing the scored result to the data store.
-- **T-5.** The answer key (item bank with `acceptedAnswers` arrays) lives **only** on the server side. The client receives only the sentence and the position of the blank.
-- **T-6.** Data store: **TBD.** Options under consideration: Google Sheets via SheetDB (kept behind the function, not directly exposed), Cloudflare D1, Supabase Postgres. Decision deferred pending estimate of expected volume and analysis needs.
+  4. Persisting the scored result to the data store.
+- **T-8.** The answer key (item bank with `acceptedAnswers` arrays) is loaded from `data/items.json` at server startup and **never** sent to the client. The browser only ever receives the sentence text and the position of the blank.
 
-### 5.3 Data Recorded per Submission
+### 5.3 Hosting
+
+- **T-9.** Hosting platform: **TBD.** Realistic candidates for a Python/FastAPI application: **Railway**, **Render**, **Fly.io**, or **PythonAnywhere**. Railway and Render are the most beginner-friendly and integrate directly with GitHub for automatic deploys.
+- **T-10.** Local development uses `uvicorn` with `--reload` for hot-reloading on file changes.
+
+### 5.4 Data Store
+
+- **T-11.** Data store: **TBD.** Options under consideration, pending estimate of expected volume and analysis needs:
+  - **SQLite** (file-based, simplest possible setup, fine for pilot-scale traffic).
+  - **PostgreSQL** via the chosen hosting platform (Railway and Render both offer managed Postgres) or via **Supabase**/**Neon**.
+- **T-12.** Rate limiting implementation: likely via **slowapi** (the FastAPI/Starlette equivalent of Flask-Limiter), or via host-provided edge limits if available. **TBD.**
+
+### 5.5 Data Recorded per Submission
 
 For each completed test, a single record containing:
 
