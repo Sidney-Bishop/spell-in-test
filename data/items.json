@@ -1,0 +1,538 @@
+{
+  "version": "0.1.0",
+  "description": "Spell in Test item bank. Each item tests a single spelling. Word-choice/homophone items are excluded. Each item provides the first letter of the target word to disambiguate from synonyms and isolate spelling ability from word-retrieval ability.",
+  "items": [
+    {
+      "id": 1,
+      "sentence": "You are a ____ of the country you were born in.",
+      "first_letter": "c",
+      "answer": "citizen",
+      "accepted_answers": [
+        "citizen"
+      ]
+    },
+    {
+      "id": 2,
+      "sentence": "It won't happen again, sorry for any ____ caused.",
+      "first_letter": "i",
+      "answer": "inconvenience",
+      "accepted_answers": [
+        "inconvenience"
+      ]
+    },
+    {
+      "id": 3,
+      "sentence": "All I need is the air that I ____.",
+      "first_letter": "b",
+      "answer": "breathe",
+      "accepted_answers": [
+        "breathe"
+      ]
+    },
+    {
+      "id": 4,
+      "sentence": "Not from this country or ____.",
+      "first_letter": "f",
+      "answer": "foreign",
+      "accepted_answers": [
+        "foreign"
+      ]
+    },
+    {
+      "id": 5,
+      "sentence": "The second month of the year is ____.",
+      "first_letter": "f",
+      "answer": "February",
+      "accepted_answers": [
+        "February"
+      ]
+    },
+    {
+      "id": 6,
+      "sentence": "We need to look after our ____ better by recycling and reducing greenhouse gases.",
+      "first_letter": "e",
+      "answer": "environment",
+      "accepted_answers": [
+        "environment"
+      ]
+    },
+    {
+      "id": 7,
+      "sentence": "A person who performs in a sport is known as an ____.",
+      "first_letter": "a",
+      "answer": "athlete",
+      "accepted_answers": [
+        "athlete"
+      ]
+    },
+    {
+      "id": 8,
+      "sentence": "The dentist had to scrape all the ____ off my teeth because I didn't brush them regularly.",
+      "first_letter": "p",
+      "answer": "plaque",
+      "accepted_answers": [
+        "plaque"
+      ]
+    },
+    {
+      "id": 9,
+      "sentence": "You need to get out and get some ____ every day to stay fit and healthy.",
+      "first_letter": "e",
+      "answer": "exercise",
+      "accepted_answers": [
+        "exercise"
+      ]
+    },
+    {
+      "id": 11,
+      "sentence": "Due to a last-minute cancellation the hotel was able to ____ me with another room.",
+      "first_letter": "a",
+      "answer": "accommodate",
+      "accepted_answers": [
+        "accommodate"
+      ]
+    },
+    {
+      "id": 12,
+      "sentence": "Before I became professional I boxed as an ____.",
+      "first_letter": "a",
+      "answer": "amateur",
+      "accepted_answers": [
+        "amateur"
+      ]
+    },
+    {
+      "id": 13,
+      "sentence": "She confessed to her crime because her ____ made her feel guilty.",
+      "first_letter": "c",
+      "answer": "conscience",
+      "accepted_answers": [
+        "conscience"
+      ]
+    },
+    {
+      "id": 14,
+      "sentence": "It was a very hot day and I felt ____ after splashing cold water on my face.",
+      "first_letter": "e",
+      "answer": "exhilarated",
+      "accepted_answers": [
+        "exhilarated"
+      ]
+    },
+    {
+      "id": 15,
+      "sentence": "The obstacle course was difficult and required some ____ to get around it.",
+      "first_letter": "m",
+      "answer": "manoeuvring",
+      "accepted_answers": [
+        "manoeuvring",
+        "maneuvering"
+      ]
+    },
+    {
+      "id": 16,
+      "sentence": "The barbarian invasion happened during a period of history known as the ____ period.",
+      "first_letter": "m",
+      "answer": "medieval",
+      "accepted_answers": [
+        "medieval"
+      ]
+    },
+    {
+      "id": 17,
+      "sentence": "A period of time 1000 years long is known as a ____.",
+      "first_letter": "m",
+      "answer": "millennium",
+      "accepted_answers": [
+        "millennium"
+      ]
+    },
+    {
+      "id": 18,
+      "sentence": "After stealing the gold coin he wore a ____ smile on his face.",
+      "first_letter": "m",
+      "answer": "mischievous",
+      "accepted_answers": [
+        "mischievous"
+      ]
+    },
+    {
+      "id": 19,
+      "sentence": "This was the second ____ of a car theft in the area in one week.",
+      "first_letter": "o",
+      "answer": "occurrence",
+      "accepted_answers": [
+        "occurrence"
+      ]
+    },
+    {
+      "id": 20,
+      "sentence": "____ is getting back up again and again after you fail.",
+      "first_letter": "p",
+      "answer": "Perseverance",
+      "accepted_answers": [
+        "Perseverance"
+      ]
+    },
+    {
+      "id": 21,
+      "sentence": "____ is nine tenths of the law.",
+      "first_letter": "p",
+      "answer": "Possession",
+      "accepted_answers": [
+        "Possession"
+      ]
+    },
+    {
+      "id": 22,
+      "sentence": "As part of a survey I was asked to fill out a ____.",
+      "first_letter": "q",
+      "answer": "questionnaire",
+      "accepted_answers": [
+        "questionnaire"
+      ]
+    },
+    {
+      "id": 23,
+      "sentence": "When I'm hungry I like to go and eat in my favourite ____.",
+      "first_letter": "r",
+      "answer": "restaurant",
+      "accepted_answers": [
+        "restaurant"
+      ]
+    },
+    {
+      "id": 24,
+      "sentence": "I can ____ you for a 3 o'clock appointment with the doctor.",
+      "first_letter": "s",
+      "answer": "schedule",
+      "accepted_answers": [
+        "schedule"
+      ]
+    },
+    {
+      "id": 25,
+      "sentence": "When the carpet is dirty I use the ____ cleaner to clean it.",
+      "first_letter": "v",
+      "answer": "vacuum",
+      "accepted_answers": [
+        "vacuum"
+      ]
+    },
+    {
+      "id": 26,
+      "sentence": "The ____ is usually sunny and warm in summer.",
+      "first_letter": "w",
+      "answer": "weather",
+      "accepted_answers": [
+        "weather"
+      ]
+    },
+    {
+      "id": 27,
+      "sentence": "When you die you get buried in the ____ with your name on a headstone.",
+      "first_letter": "c",
+      "answer": "cemetery",
+      "accepted_answers": [
+        "cemetery"
+      ]
+    },
+    {
+      "id": 28,
+      "sentence": "I never drive my car, I'm rich and I have a ____ who drives me around.",
+      "first_letter": "c",
+      "answer": "chauffeur",
+      "accepted_answers": [
+        "chauffeur"
+      ]
+    },
+    {
+      "id": 29,
+      "sentence": "That accountant was highly recommended by a work ____ of mine.",
+      "first_letter": "c",
+      "answer": "colleague",
+      "accepted_answers": [
+        "colleague"
+      ]
+    },
+    {
+      "id": 30,
+      "sentence": "Using leaves and paint, soldiers can ____ themselves in the jungle and thus hide from their enemies.",
+      "first_letter": "c",
+      "answer": "camouflage",
+      "accepted_answers": [
+        "camouflage"
+      ]
+    },
+    {
+      "id": 31,
+      "sentence": "You ____ should not break the law if you don't want to go to jail.",
+      "first_letter": "d",
+      "answer": "definitely",
+      "accepted_answers": [
+        "definitely"
+      ]
+    },
+    {
+      "id": 32,
+      "sentence": "There are many texts in English ____ that are priceless.",
+      "first_letter": "l",
+      "answer": "literature",
+      "accepted_answers": [
+        "literature"
+      ]
+    },
+    {
+      "id": 33,
+      "sentence": "To convert the temperature from the ____ scale to Celsius scale simply...",
+      "first_letter": "f",
+      "answer": "Fahrenheit",
+      "accepted_answers": [
+        "Fahrenheit"
+      ]
+    },
+    {
+      "id": 34,
+      "sentence": "An ____ is an unusual feature or behaviour of a person.",
+      "first_letter": "i",
+      "answer": "idiosyncrasy",
+      "accepted_answers": [
+        "idiosyncrasy"
+      ]
+    },
+    {
+      "id": 35,
+      "sentence": "When I see chocolate cake I just can't help myself, it's simply ____.",
+      "first_letter": "i",
+      "answer": "irresistible",
+      "accepted_answers": [
+        "irresistible"
+      ]
+    },
+    {
+      "id": 36,
+      "sentence": "I asked my dentist, is it really ____ to brush my teeth every time after eating food.",
+      "first_letter": "n",
+      "answer": "necessary",
+      "accepted_answers": [
+        "necessary"
+      ]
+    },
+    {
+      "id": 37,
+      "sentence": "Despite his best efforts to disguise it, his black eye was very ____ to anyone he met.",
+      "first_letter": "n",
+      "answer": "noticeable",
+      "accepted_answers": [
+        "noticeable"
+      ]
+    },
+    {
+      "id": 38,
+      "sentence": "The bad weather was very ____, it rained every day for a week.",
+      "first_letter": "p",
+      "answer": "persistent",
+      "accepted_answers": [
+        "persistent"
+      ]
+    },
+    {
+      "id": 39,
+      "sentence": "In ancient Egypt the ____ was buried in the pyramid.",
+      "first_letter": "p",
+      "answer": "pharaoh",
+      "accepted_answers": [
+        "pharaoh"
+      ]
+    },
+    {
+      "id": 40,
+      "sentence": "A ____ asks for your vote when he or she runs for election.",
+      "first_letter": "p",
+      "answer": "politician",
+      "accepted_answers": [
+        "politician"
+      ]
+    },
+    {
+      "id": 41,
+      "sentence": "____ is the language of Portugal.",
+      "first_letter": "p",
+      "answer": "Portuguese",
+      "accepted_answers": [
+        "Portuguese"
+      ]
+    },
+    {
+      "id": 42,
+      "sentence": "I couldn't think of her name even though it was on the tip of my ____.",
+      "first_letter": "t",
+      "answer": "tongue",
+      "accepted_answers": [
+        "tongue"
+      ]
+    },
+    {
+      "id": 43,
+      "sentence": "I was late returning the book to the ____ and so I owed a 1 euro fine.",
+      "first_letter": "l",
+      "answer": "library",
+      "accepted_answers": [
+        "library"
+      ]
+    },
+    {
+      "id": 44,
+      "sentence": "To judge a person without knowing the full facts is to ____ them.",
+      "first_letter": "p",
+      "answer": "prejudice",
+      "accepted_answers": [
+        "prejudice"
+      ]
+    },
+    {
+      "id": 45,
+      "sentence": "If the reservoir wall ever broke the consequences for the town below would be ____.",
+      "first_letter": "d",
+      "answer": "disastrous",
+      "accepted_answers": [
+        "disastrous"
+      ]
+    },
+    {
+      "id": 46,
+      "sentence": "In his retirement speech he said that it had been a ____ to have worked with such great people.",
+      "first_letter": "p",
+      "answer": "privilege",
+      "accepted_answers": [
+        "privilege"
+      ]
+    },
+    {
+      "id": 47,
+      "sentence": "Writing rude words on the holy painting was seen as ____ by the church.",
+      "first_letter": "s",
+      "answer": "sacrilegious",
+      "accepted_answers": [
+        "sacrilegious"
+      ]
+    },
+    {
+      "id": 48,
+      "sentence": "When pulled from the water the boy was unconscious; the lifeguard tried to ____ him.",
+      "first_letter": "r",
+      "answer": "resuscitate",
+      "accepted_answers": [
+        "resuscitate"
+      ]
+    },
+    {
+      "id": 49,
+      "sentence": "We bring bird seed to the park to feed the ____.",
+      "first_letter": "p",
+      "answer": "pigeons",
+      "accepted_answers": [
+        "pigeons"
+      ]
+    },
+    {
+      "id": 51,
+      "sentence": "We had a little garden ____ in our garden who had sat by the pool with a little fishing rod.",
+      "first_letter": "g",
+      "answer": "gnome",
+      "accepted_answers": [
+        "gnome"
+      ]
+    },
+    {
+      "id": 52,
+      "sentence": "They held a ____ ceremony to remember the soldiers who gave their lives in the war.",
+      "first_letter": "c",
+      "answer": "commemoration",
+      "accepted_answers": [
+        "commemoration"
+      ]
+    },
+    {
+      "id": 53,
+      "sentence": "I was being asked so many questions that it felt like I was in the Spanish ____.",
+      "first_letter": "i",
+      "answer": "Inquisition",
+      "accepted_answers": [
+        "Inquisition"
+      ]
+    },
+    {
+      "id": 54,
+      "sentence": "A large lorry skidded on the ice causing a major traffic ____ on the motorway.",
+      "first_letter": "a",
+      "answer": "accident",
+      "accepted_answers": [
+        "accident"
+      ]
+    },
+    {
+      "id": 55,
+      "sentence": "____ the cupboard door opened and all the cups fell onto the floor and broke.",
+      "first_letter": "u",
+      "answer": "Unexpectedly",
+      "accepted_answers": [
+        "Unexpectedly"
+      ]
+    },
+    {
+      "id": 56,
+      "sentence": "The decision to call off the event was ____ and could not have been predicted.",
+      "first_letter": "s",
+      "answer": "spontaneous",
+      "accepted_answers": [
+        "spontaneous"
+      ]
+    },
+    {
+      "id": 57,
+      "sentence": "The ____ high value of the watch was confirmed by the jeweller by testing the purity of the gold.",
+      "first_letter": "p",
+      "answer": "perceived",
+      "accepted_answers": [
+        "perceived"
+      ]
+    },
+    {
+      "id": 58,
+      "sentence": "The torpedo was moving at high speed and was less than 100 feet from the ship. The captain knew that a collision was ____.",
+      "first_letter": "i",
+      "answer": "imminent",
+      "accepted_answers": [
+        "imminent"
+      ]
+    },
+    {
+      "id": 59,
+      "sentence": "The ____ of the country was inevitable after the downfall of its financial system.",
+      "first_letter": "d",
+      "answer": "demise",
+      "accepted_answers": [
+        "demise"
+      ]
+    },
+    {
+      "id": 62,
+      "sentence": "When I was small I had an ____ friend who talked to me all the time.",
+      "first_letter": "i",
+      "answer": "imaginary",
+      "accepted_answers": [
+        "imaginary"
+      ]
+    },
+    {
+      "id": 63,
+      "sentence": "We vote to elect our ____ and they represent our country and make the laws.",
+      "first_letter": "g",
+      "answer": "government",
+      "accepted_answers": [
+        "government"
+      ]
+    }
+  ]
+}
