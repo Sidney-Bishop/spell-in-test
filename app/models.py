@@ -14,6 +14,17 @@ from pydantic import BaseModel, Field
 
 # --- Requests ---
 
+class StartSessionRequest(BaseModel):
+    """Body of POST /api/session.
+
+    The 'website' field is a honeypot: real users never see or fill in this
+    field. Bots that auto-fill all form fields will populate it, which lets
+    us identify and silently reject them.
+    """
+
+    website: str = Field(default="", max_length=200)
+
+
 class SubmitRequest(BaseModel):
     """Body of POST /api/submit."""
 

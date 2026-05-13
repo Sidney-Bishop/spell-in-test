@@ -46,7 +46,12 @@ function showScreen(name) {
 // --- API ---
 
 async function apiStartSession() {
-    const res = await fetch("/api/session", { method: "POST" });
+    const honeypot = document.getElementById("hp-website").value;
+    const res = await fetch("/api/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ website: honeypot }),
+    });
     if (!res.ok) throw new Error("Failed to start session");
     return res.json();
 }

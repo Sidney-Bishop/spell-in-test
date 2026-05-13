@@ -3,6 +3,11 @@
     --text: #1a1a1a;
     --muted: #555555;
     --accent: #0066cc;
+    --accent-hover: #004fa3;
+    --timer: #0066cc;
+    --timer-track: #e0e0e0;
+    --warn: #b00020;
+    --border: #c5c5c5;
 }
 
 * {
@@ -21,7 +26,7 @@ body {
 .container {
     max-width: 640px;
     margin: 0 auto;
-    padding: 4rem 1.5rem;
+    padding: 3rem 1.5rem;
 }
 
 h1 {
@@ -33,4 +38,184 @@ h1 {
     color: var(--muted);
     font-size: 1.1rem;
     margin: 0 0 2rem;
+}
+
+/* --- Screen visibility --- */
+
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* --- Intro --- */
+
+.instructions {
+    margin: 2rem 0;
+}
+
+.instructions p {
+    margin: 0.75rem 0;
+}
+
+.privacy-notice {
+    background: #f5f5f5;
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+    border-radius: 4px;
+}
+
+.privacy-notice h2 {
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+    color: var(--text);
+}
+
+.privacy-notice p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    color: var(--muted);
+}
+
+.privacy-notice p:last-child {
+    margin-bottom: 0;
+}
+
+/* --- Honeypot --- */
+
+.hp-field {
+    position: absolute !important;
+    left: -10000px !important;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* --- Test --- */
+
+.progress {
+    color: var(--muted);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.timer-track {
+    width: 100%;
+    height: 6px;
+    background: var(--timer-track);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.timer-bar {
+    height: 100%;
+    width: 100%;
+    background: var(--timer);
+    transition: width 0.1s linear;
+}
+
+.sentence {
+    font-size: 1.4rem;
+    margin: 0 0 2rem;
+    line-height: 1.4;
+}
+
+.answer-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.hint {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+input[type="text"] {
+    flex: 1;
+    font-size: 1.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    font-family: inherit;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 48px;
+}
+
+input[type="text"]:focus {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+    border-color: var(--accent);
+}
+
+/* --- Buttons --- */
+
+.primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    font-family: inherit;
+    border-radius: 4px;
+    cursor: pointer;
+    min-height: 48px;
+    min-width: 120px;
+}
+
+.primary:hover {
+    background: var(--accent-hover);
+}
+
+.primary:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* --- Paste warning --- */
+
+.paste-warning {
+    color: var(--warn);
+    font-size: 1rem;
+    min-height: 1.5rem;
+    margin: 1rem 0 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.paste-warning.show {
+    opacity: 1;
+}
+
+/* --- Completion --- */
+
+.final-score {
+    font-size: 1.6rem;
+    margin: 2rem 0;
+}
+
+.thanks {
+    color: var(--muted);
+    font-size: 1.1rem;
+}
+
+/* --- Accessibility --- */
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
 }

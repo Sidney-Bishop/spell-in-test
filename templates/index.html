@@ -8,9 +8,85 @@
 </head>
 <body>
     <main class="container">
-        <h1>{{ title }}</h1>
-        <p class="subtitle">An online spelling assessment.</p>
-        <p>The test isn't ready yet — but the server, templates, and styling are all wired up.</p>
+
+        <!-- Intro screen: shown first -->
+        <section id="screen-intro" class="screen active">
+            <h1>Spell in Test</h1>
+            <p class="subtitle">An online spelling assessment.</p>
+
+            <div class="instructions">
+                <p>You'll see <strong>59 sentences</strong>, each with one word missing.</p>
+                <p>The first letter of the missing word is shown as a hint.</p>
+                <p>Type the missing word and press <strong>Enter</strong> or click <strong>Submit</strong>.</p>
+                <p>You have <strong>12 seconds</strong> for each question. If you run out of time, your answer is auto-submitted.</p>
+                <p>Once you submit, you cannot go back.</p>
+                <p><em>Paste and spell-check are disabled for this test.</em></p>
+            </div>
+
+            <div class="privacy-notice">
+                <h2>About your data</h2>
+                <p>This test is anonymous. We do <strong>not</strong> collect your name, email address, IP address, or any other identifying information.</p>
+                <p>We record your spelling answers, response times, and a session identifier. Results are used only for research into adult literacy.</p>
+                <p>By clicking <strong>Start the test</strong>, you confirm that you understand this and consent to your responses being recorded.</p>
+            </div>
+
+            <!-- Honeypot field. Invisible to real users; bots fill it in. -->
+            <input
+                type="text"
+                id="hp-website"
+                name="website"
+                class="hp-field"
+                tabindex="-1"
+                autocomplete="off"
+                aria-hidden="true">
+
+            <button id="btn-start" class="primary">Start the test</button>
+        </section>
+
+        <!-- Test screen: shown during the test -->
+        <section id="screen-test" class="screen" aria-live="polite">
+            <div class="progress" aria-live="polite">
+                <span id="progress-text">Question 1 of 59</span>
+            </div>
+
+            <div class="timer-track" aria-hidden="true">
+                <div id="timer-bar" class="timer-bar"></div>
+            </div>
+
+            <p id="sentence" class="sentence"></p>
+
+            <form id="answer-form" autocomplete="off">
+                <label for="answer" class="visually-hidden">Your answer</label>
+                <div class="answer-row">
+                    <span id="hint" class="hint" aria-hidden="true"></span>
+                    <input
+                        type="text"
+                        id="answer"
+                        name="answer"
+                        autocomplete="off"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                        required>
+                </div>
+                <button type="submit" class="primary">Submit</button>
+            </form>
+
+            <p id="paste-warning" class="paste-warning" role="alert"></p>
+        </section>
+
+        <!-- Completion screen: shown at the end -->
+        <section id="screen-complete" class="screen">
+            <h1>Test complete</h1>
+            <p class="final-score">
+                You got <strong id="final-correct">0</strong> out of
+                <strong id="final-total">0</strong> correct.
+            </p>
+            <p class="thanks">Thank you for taking part.</p>
+        </section>
+
     </main>
+
+    <script src="/static/app.js"></script>
 </body>
 </html>

@@ -12,6 +12,7 @@ from app.models import (
     CompletionSummary,
     QuestionView,
     SessionStarted,
+    StartSessionRequest,
     SubmissionResult,
     SubmitRequest,
 )
@@ -43,8 +44,17 @@ def index(request: Request):
 # --- API routes ---
 
 @app.post("/api/session", response_model=SessionStarted)
-def start_session():
+def start_session(body: StartSessionRequest):
     """Begin a new test session. Returns the session id and total question count."""
+    if body.website:
+        # Honeypot triggered. Silently return a fake response that looks
+        # successful but never creates a real session. The bot will think
+        # it succeeded and stop pestering us.
+        return SessionStarted(
+            session_id="00000000-0000-0000-0000-000000000000",
+            total_questions=0,
+        )
+
     session = store.create()
     return SessionStarted(
         session_id=session.id,
