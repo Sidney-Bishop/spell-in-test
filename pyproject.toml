@@ -1,0 +1,22 @@
+[project]
+name = "spell-in-test"
+version = "0.1.0"
+description = "An online spelling assessment for adults, designed as a research instrument."
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "Jason Roche" }
+]
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "jinja2>=3.1",
+    "python-multipart>=0.0.12",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "httpx>=0.27",
+    "ruff>=0.7",
+]
