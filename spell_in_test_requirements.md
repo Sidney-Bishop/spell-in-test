@@ -1,14 +1,28 @@
 # Spell in Test — Project Requirements
 
-**Status:** Draft v3 — Python/FastAPI stack, post-MVP build
-**Last updated:** 13 May 2026
+**Status:** Draft v4 — research question clarified; demographics scope reversed
+**Last updated:** 14 May 2026
 **Stack note:** Initial planning assumed a Node/Netlify Functions stack. After review, switched to Python/FastAPI to match developer preference and skill set. The frontend remains plain HTML/CSS/JS.
 
 ## 1. Purpose and Scope
 
-Spell in Test is an online spelling assessment for an adult audience (ages 16–70), intended for **public launch as a research instrument**. It presents a sequential series of fill-in-the-blank sentences, each requiring the user to type the missing word. Scoring is automatic and server-side. No personally identifying information is collected; demographic data is not collected in this version.
+Spell in Test is an online spelling assessment for an adult audience (ages 16–70), intended for **public launch as a research instrument**. It presents a sequential series of fill-in-the-blank sentences, each requiring the user to type the missing word. Scoring is automatic and server-side.
 
-This document is the working reference for design and implementation decisions. Items marked **TBD** are open and must be decided before launch. Items marked ✅ are implemented as of v3.
+This document is the working reference for design and implementation decisions. Items marked **TBD** are open and must be decided before launch. Items marked ✅ are implemented as of v4.
+
+### 1.1 Research Question
+
+The primary research question is **not** "who is good at spelling?" but rather:
+
+> **When people misspell a word, what *kind* of error do they make, and what factors predict different error patterns?**
+
+The expected outputs of the research are:
+
+- A catalogue of typical misspellings for the words in the item bank.
+- A categorisation of error *mechanisms* (phonetic substitution, morphological error, visual/orthographic confusion, etymology error, doubling/single-letter error, etc.).
+- An analysis of how error patterns distribute across participant subpopulations (especially first-language English speakers vs non-native speakers, segmented by age of English acquisition and first language).
+
+This framing has implications throughout the project: the demographic variables collected, the data recorded per response (raw submitted answer, not just correct/incorrect), and the analysis tooling required (see C-11).
 
 ---
 
@@ -23,6 +37,7 @@ This document is the working reference for design and implementation decisions. 
 - **F-5.** ✅ At the end of the test, the user is shown a completion screen displaying their final score as "You got X out of N correct." No per-question feedback is shown during the test.
 - **F-16.** ✅ The first letter of the target word is displayed as a hint alongside the sentence. This is an intentional design decision: the hint isolates spelling ability from word-retrieval ability, reducing construct-irrelevant variance in the data.
 - **F-17.** ✅ An intro screen is shown before the test begins, explaining the rules (number of questions, time per question, paste disabled, no going back). A "Start the test" button advances to the first question.
+- **F-18.** **Planned for v2:** A demographic questionnaire is shown between the intro screen and the first question. See Section 8.4.
 
 ### 2.2 Answer Validation
 
@@ -40,8 +55,8 @@ This document is the working reference for design and implementation decisions. 
 
 ### 2.4 Progress Persistence
 
-- **F-14.** Current question index and answers-so-far are saved to `localStorage` after each submission, so an accidental refresh does not lose progress. **Not yet implemented.**
-- **F-15.** On page load, if a saved session exists, the user is offered the option to resume or restart. **Not yet implemented.**
+- **F-14.** ✅ Current session ID is saved to `localStorage` on session creation and after each submission, so an accidental refresh does not lose progress. Server-validated on page load before offering resume.
+- **F-15.** ✅ On page load, if a saved session exists and is still valid server-side, the user is shown a "Welcome back" screen offering Resume / Start over options.
 
 ---
 
@@ -67,7 +82,7 @@ The following are known and accepted limitations, to be acknowledged in any rese
 - A user with a second device or a second person in the room cannot be detected.
 - Browser extensions (e.g. Grammarly) may inject spell-check despite the input attributes; this is mitigated but not eliminated.
 
-The combined defences (time limit + paste block + spell-check attributes + visibility logging) make casual cheating slower than honest answering, which is the practical goal. Anonymous participants have no incentive to cheat.
+The combined defences (time limit + paste block + spell-check attributes + visibility logging) make casual cheating slower than honest answering, which is the practical goal. Participants have no incentive to cheat.
 
 ---
 
@@ -87,7 +102,7 @@ The combined defences (time limit + paste block + spell-check attributes + visib
 
 - **T-1.** ✅ Vanilla HTML, CSS, and JavaScript in the browser. No frontend framework (React, Vue, etc.). HTML is rendered server-side from Jinja2 templates; the browser receives plain HTML/CSS/JS with no build step.
 - **T-2.** ✅ Mobile-first responsive design. Large touch targets (minimum 44×44 px), large input field, comfortable text size (≥18 px body).
-- **T-3.** ✅ Client-side JavaScript handles only: per-question timer countdown, paste/drop/context-menu blocking, tab-visibility logging, and form submission. All scoring logic is server-side.
+- **T-3.** ✅ Client-side JavaScript handles only: per-question timer countdown, paste/drop/context-menu blocking, tab-visibility logging, form submission, and localStorage progress persistence. All scoring logic is server-side.
 
 ### 5.2 Backend
 
@@ -108,6 +123,7 @@ The combined defences (time limit + paste block + spell-check attributes + visib
 - **T-15.** ✅ Item order within a session is **randomised at session creation** and fixed thereafter. Each session gets its own random sample of items.
 - **T-16.** ✅ Number of items per session is configurable (constant `ITEMS_PER_SESSION` in `app/sessions.py`). Currently set to 2 for development; will be raised before launch.
 - **T-17.** ✅ Sessions expire after **30 minutes of inactivity**. Expired sessions are reaped opportunistically on the next store interaction (no background sweeper required at current traffic levels).
+- **T-18.** ✅ A `GET /api/session/{session_id}` endpoint returns session state (current position, total questions, completion status) without advancing the session. Used by the frontend on page load to validate a stored session before offering resume.
 
 ### 5.4 Hosting
 
@@ -128,9 +144,10 @@ For each completed test, a single record is appended to `data/responses.jsonl` c
 - ✅ Timestamp completed (`completed_at`, ISO 8601 UTC)
 - ✅ Final score (count correct) and total questions
 - ✅ For each question: `item_id`, submitted answer (raw), correct/incorrect (server-determined), `response_time_ms`, `blur_count`, `time_hidden_ms`, `submitted_at`
+- **Planned for v2:** demographic data collected at session start (see Section 8.4).
 - Coarse locale indicator from `Accept-Language` header (for regional-spelling analysis). **Not yet implemented.**
 
-**No** IP address, email, name, or identifying information is stored.
+The **raw submitted answer** is critical to the research question (1.1) — error-mechanism analysis cannot be performed on a correct/incorrect flag alone.
 
 ---
 
@@ -145,34 +162,91 @@ For each completed test, a single record is appended to `data/responses.jsonl` c
 
 ---
 
-## 7. Privacy
+## 7. Privacy and Demographics
 
-- **P-1.** ✅ A brief privacy notice is shown on the intro screen, stating: no personal data is collected, results are anonymous, and the purpose of data collection (research). Clicking "Start the test" constitutes consent.
-- **P-2.** ✅ No demographics, no email, no name, no account, no IP address recorded.
-- **P-3.** As an Irish-based project under GDPR, the legal basis for processing is legitimate interest in research, applied to anonymous-only data.
+### 7.1 Scope Decision (Reversed from v1–v3)
+
+Earlier versions of this document explicitly excluded demographic collection. **As of v4, this decision is reversed**, because the clarified research question (1.1) requires demographic context to be answerable. Asking "what error mechanisms do people make and what predicts them?" cannot be answered without participant context.
+
+The collected variables are deliberately limited to those with strong analytical value for the research question. See Section 8.4 for the specific list.
+
+### 7.2 GDPR and Legal Basis
+
+- **P-1.** ✅ A brief privacy notice is shown on the intro screen. **The notice must be revised** to reflect the addition of demographic data collection. See requirement P-4.
+- **P-2.** No name, email address, account, or password is collected. The system has no concept of "user identity" beyond a per-session UUID.
+- **P-3.** As an Irish-based project under GDPR, the legal basis for processing demographic data must be determined. **TBD.** Options: legitimate interest (research), explicit consent (likely required given the categories collected), or another basis. Decision pending consultation; see Open Items.
+- **P-4.** **Planned for v2:** The privacy notice is rewritten to enumerate the demographic fields collected, the purpose (error-mechanism research), the retention period, and the participant's rights (access, correction, erasure) under GDPR.
+- **P-5.** **Planned for v2:** The demographic questionnaire is **optional** — participants can skip any individual question or skip the entire questionnaire. Skipped responses are recorded as null, not as "prefer not to say" (which would be data; null is its absence).
+
+### 7.3 No Personally Identifying Information
+
+The following remain **never collected**, even with the demographic addition:
+
+- Name
+- Email address
+- IP address (the server may see it transiently for rate limiting but does not store it)
+- Account or login credentials
+- Geolocation beyond country-level
+- Profession or employer
 
 ---
 
 ## 8. Item Bank
 
-- **C-1.** Test length: **TBD.** Currently 59 items available; per-session count configurable via `ITEMS_PER_SESSION`. Original target was 40–60 items per session. At 12 s/question, 50 items = ~10 minutes plus reading time.
+### 8.1 Item Structure
+
+- **C-1.** Test length: **TBD.** Currently 59 items available; per-session count configurable via `ITEMS_PER_SESSION`. Original target was 40–60 items per session. At 12 s/question, 50 items = ~10 minutes plus reading time and demographic questionnaire.
 - **C-2.** ✅ Each item is a fill-in-the-blank sentence with one missing word. Currently one sentence per item; see C-7.
 - **C-3.** ✅ Each item has an `accepted_answers` array covering all valid regional spellings.
 - **C-4.** Items must be reviewed by multiple native English speakers for clarity and unambiguity before piloting. **Initial review completed for current 59 items; additional review recommended before launch.**
 - **C-5.** Item difficulty range and sourcing approach: items sourced from author's existing list; no difficulty tagging in v1. Difficulty may be inferred from pilot data after launch.
 - **C-6.** A piloting phase with a small, friendly audience precedes any public launch.
+
+### 8.2 Multi-Sentence Support (v2)
+
 - **C-7.** **Planned for v2:** Each item supports multiple sentence variants. One sentence is chosen at session creation per item and recorded with the response. The same participant in the same session sees a fixed sentence for each item; different sessions may see different variants. This enables per-sentence analysis of item performance and lets weak sentences be identified and improved.
 - **C-8.** **Planned for v2:** Items may carry optional editorial metadata: known typical misspellings (`typical_misspellings`), words commonly confused with the answer (`confused_with`), and free-form authoring notes (`notes`). These are documentation aids, not used for scoring.
+
+### 8.3 Architectural Principles
+
 - **C-9.** **Architectural principle:** Item performance statistics (correctness rate, observed misspellings, response times) are computed from the responses log on demand, never stored on items themselves. The item bank is *authored content*; statistics are *derived data*. The two must remain in separate storage with separate lifecycles.
 - **C-10.** **Planned for v2:** Promote `Item` from TypedDict to frozen `@dataclass` with methods (`pick_sentence`, `is_correct`). Behaviour for "what can I do with an item" co-locates with the data; the dataclass is immutable to prevent runtime mutation of the bank.
 
+### 8.4 Demographic Questionnaire (v2)
+
+The five-variable shortlist below is calibrated to the research question (1.1), specifically to enable analysis of *error mechanism* differences across participant subpopulations. Other plausible demographics (gender, profession, age band, country of education) were considered and rejected — they predict overall accuracy more than they predict error patterns, and add GDPR burden without analytical payoff for the chosen research question.
+
+- **D-1.** **Planned for v2: Is English your first language?** (Yes / No)
+- **D-2.** **Planned for v2: First language** (if English is not the first language). Multi-select picker from a curated list of common world languages plus a free-text "other" option. Self-reported; no validation.
+- **D-3.** **Planned for v2: Age of English acquisition** (only asked if D-1 is "No"). Bands: under 5, 5–10, 11–16, 17+. This is the single most predictive variable for non-native English error patterns and is well-established in the literacy literature.
+- **D-4.** **Planned for v2: Other languages spoken fluently** (multi-select from short list + "other"). Optional. Predictive of cross-linguistic error patterns.
+- **D-5.** **Planned for v2: Highest education completed** (five bands: no qualifications, secondary, vocational/technical, undergraduate, postgraduate). Kept as a covariate rather than a primary predictor.
+
+Each question is individually optional (per P-5). The questionnaire is presented after the intro and consent screen but before the first item, so participants who decline cannot influence test items by their non-response.
+
 ---
 
-## 9. Open Items (TBD)
+## 9. Error-Mechanism Analysis (v2)
+
+- **C-11.** **Planned for v2:** An analysis module (`app/analysis.py` or external notebook) categorises wrong answers by mechanism. Candidate mechanisms include:
+  - **Phonetic** — the misspelling represents a plausible phonetic rendering of the target word (Soundex/Metaphone match or near-match).
+  - **Morphological** — wrong affix pattern (e.g. missing letter in a doubled-prefix word like "unnecessary").
+  - **Visual/orthographic** — letters present in roughly the right places but in the wrong configuration (e.g. "recieve" for "receive"); typically detected via low edit distance with specific edit types.
+  - **Etymology** — misspelling driven by an incorrect assumption about word origin (e.g. "sacrelegious" assumes the word derives from "religious").
+  - **Doubling/single-letter** — wrong single-vs-double letter pattern.
+  - **Regional variant** — submitted answer is a valid regional variant not in `accepted_answers`. (Should be rare if accepted_answers is well-maintained, but worth catching.)
+
+- **C-12.** **Planned for v2:** Categorisation strategy: hybrid algorithmic + manual review. Initial pass is algorithmic (phonetic distance, edit distance with edit-type analysis, pattern matching against known confusables). Edge cases are flagged for manual review and annotation. Refinement of the algorithmic classifier is itself part of the research output.
+
+- **C-13.** **Architectural placement:** This analysis lives entirely outside the participant-facing application. It operates on `responses.jsonl` (or the eventual database) and produces its own analytical artifacts. No analysis affects what participants see during the test.
+
+---
+
+## 10. Open Items (TBD)
 
 The following decisions are not yet made and should be resolved before public launch:
 
-1. Final test length and total time budget.
+1. Final test length and total time budget (now including demographic questionnaire time).
 2. Choice of data store for production (SQLite vs. PostgreSQL via Railway/Render/Supabase/Neon).
 3. Choice of hosting platform (Railway, Render, Fly.io, PythonAnywhere).
 4. Choice of rate-limiting implementation (slowapi vs. host-edge).
@@ -183,45 +257,50 @@ The following decisions are not yet made and should be resolved before public la
 9. Number of sentence variants per word to author for v2 (target: 3 per word).
 10. Minimum-completion-time threshold for bot rejection (depends on final test length).
 11. Persistent session storage strategy (database-backed sessions vs. cookie-backed JWT vs. accept-the-loss-on-restart).
+12. **GDPR legal basis for demographic data collection** (legitimate interest vs. explicit consent vs. other). Likely requires explicit, granular consent given the categories (language is borderline-sensitive under some interpretations). Resolution may require consulting a data protection professional.
+13. **Demographic questionnaire UX**: single screen with all five questions, or progressive disclosure (one at a time)? Single screen is simpler but may feel demanding; progressive may improve completion but adds clicks.
+14. **Categorisation taxonomy for error mechanisms** — refining the initial six categories in C-11 based on pilot data.
+15. **Retention period** for response data (1 year? indefinite? until research is published?).
 
 ---
 
-## 10. Out of Scope for This Version
+## 11. Out of Scope for This Version
 
 The following were considered and explicitly deferred:
 
-- Demographic collection (Age, Gender, Education).
-- User accounts or authentication.
+- User accounts or authentication of any form (no signup, no login, no social login).
+- Stable cross-session identifiers (no "device ID" cookie or fingerprint).
 - Adaptive difficulty.
 - Migration to Next.js / TypeScript / Supabase full-stack architecture.
 - Real-time features or multi-user functionality.
 - A "back" button or answer revision.
 - Showing the correct answer to the user after each question.
 - Per-item feedback during the test.
+- Gender, profession, age band, and country of education as demographic variables (considered and rejected as low-signal for the chosen research question).
 
 ---
 
-## 11. Implementation Status Snapshot
+## 12. Implementation Status Snapshot
 
-As of v3 of this document (end of day 1 of implementation), the following are implemented and committed to git:
+As of v4 of this document, the following are implemented and committed to git:
 
 - FastAPI scaffold with Jinja2 templates and static assets
 - 59-item bank with regional variants, loaded and validated at startup
 - Server-side scoring (case-insensitive, whitespace-tolerant, accepts variants)
 - In-memory session store with random ordering and 30-min idle expiry
 - Configurable items-per-session cap (currently 2 for testing)
-- Four-route API: start session, get current question, submit answer, get summary
-- Frontend: intro screen, test screen, completion screen
+- Five-route API: start session, get session state, get current question, submit answer, get summary
+- Frontend: intro screen, resume screen, test screen, completion screen
 - 12-second per-question timer with auto-submit
 - Paste/drop/right-click blocked on the answer input
 - Tab-visibility tracking per question (`blur_count`, `time_hidden_ms`)
 - Honeypot bot trap on session creation
-- Privacy notice on intro screen
+- Privacy notice on intro screen (will need revision when demographics are added)
+- localStorage progress persistence with server-validated resume
 - Persistent JSONL storage of completed test results
 
 Remaining for v1 public launch:
 
-- localStorage progress persistence
 - Cloudflare Turnstile integration
 - Minimum-completion-time check
 - Rate limiting
@@ -230,9 +309,11 @@ Remaining for v1 public launch:
 - Deployment to a hosting platform
 - Database for results (replacing JSONL)
 
-Planned for v2:
+Planned for v2 (research-question-driven):
 
+- Demographic questionnaire (D-1 to D-5)
+- Updated privacy notice and GDPR consent flow (P-4, P-5)
 - Multi-sentence-per-word item structure (C-7)
 - Editorial metadata on items (C-8)
 - `Item` dataclass with methods (C-10)
-- Analysis module for derived statistics (C-9)
+- Error-mechanism analysis module (C-11 to C-13)
