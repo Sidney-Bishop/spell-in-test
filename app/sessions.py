@@ -22,7 +22,7 @@ from app.items import ITEMS, get_item
 # Tunables. Worth promoting to config later, but inline for now.
 SESSION_IDLE_TIMEOUT = timedelta(minutes=30)
 RANDOMISE_ORDER = True  # If False, items are served in canonical (id) order.
-ITEMS_PER_SESSION = 2  # Set to None to use all available items.
+ITEMS_PER_SESSION = 10  # Set to None to use all available items.
 
 
 @dataclass
