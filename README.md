@@ -1,14 +1,19 @@
-# Spell in Test
+<p align="center">
+  <img src="assets/project_logo.png" alt="Spell-in-test" width="800">
+</p>
 
-An online spelling assessment built with Python, FastAPI, and plain HTML/CSS/JS.
+![python](https://img.shields.io/badge/python-3.12%2B-blue)
+![framework](https://img.shields.io/badge/framework-FastAPI-009688)
+![status](https://img.shields.io/badge/status-v1.0-success)
+![license](https://img.shields.io/badge/license-MIT-yellow)
+
+An online spelling assessment built with Python, FastAPI, and plain HTML/CSS/JS. Designed as a research instrument for studying adult spelling — specifically, the *kinds* of errors people make when they misspell a word.
 
 This is **version 1.0** — a locally-runnable build intended for development and personal pilot use. It is not yet ready for public deployment; see "Status and limitations" below.
 
 ## What it does
 
 Presents the participant with a sequence of fill-in-the-blank sentences, each missing one word. The participant types the missing word and submits. Each question has a 12-second time limit. The test concludes with a final score.
-
-The intent is to support research into adult spelling — specifically, the *kinds* of errors people make when they misspell a word.
 
 ## Quick start
 
@@ -47,6 +52,8 @@ spell-in-test/
 │   ├── sessions.py         # In-memory session management
 │   ├── storage.py          # JSONL persistence for completed sessions
 │   └── models.py           # Pydantic request/response models
+├── assets/                 # Project graphics and other static resources
+│   └── project_logo.png
 ├── static/                 # CSS, JS served to the browser
 │   ├── styles.css
 │   └── app.js              # Frontend logic: timer, paste blocking, etc.
@@ -92,6 +99,6 @@ Each line is a self-contained JSON object representing one completed test, inclu
 - The item bank lives in `data/items.json` and is loaded once at server startup. Editing it requires a server restart (or auto-reload will pick it up if you also touch a Python file).
 - The number of questions per session is controlled by `ITEMS_PER_SESSION` in `app/sessions.py`. Set to an integer for a fixed sample size, or `None` to use all available items.
 
-## Licence and use
+## Licence
 
-This project is intended for research and personal use. No licence has been formally chosen yet.
+Released under the MIT licence. See [`LICENSE`](LICENSE) for the full text.
