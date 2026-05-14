@@ -44,6 +44,18 @@ class SessionStarted(BaseModel):
     total_questions: int
 
 
+class SessionState(BaseModel):
+    """Returned by GET /api/session/{id}.
+
+    Reports a session's state without advancing it. Used for resume validation.
+    """
+
+    session_id: str
+    current_index: int
+    total_questions: int
+    is_complete: bool
+
+
 class QuestionView(BaseModel):
     """One question, as it should appear to the participant.
 

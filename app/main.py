@@ -12,6 +12,7 @@ from app.models import (
     CompletionSummary,
     QuestionView,
     SessionStarted,
+    SessionState,
     StartSessionRequest,
     SubmissionResult,
     SubmitRequest,
@@ -59,6 +60,25 @@ def start_session(body: StartSessionRequest):
     return SessionStarted(
         session_id=session.id,
         total_questions=session.total_questions,
+    )
+
+
+@app.get("/api/session/{session_id}", response_model=SessionState)
+def get_session_state(session_id: str):
+    """Return the current state of a session without advancing it.
+
+    Used by the frontend to validate a stored session ID on page load,
+    before offering the user the option to resume.
+    """
+    session = store.get(session_id)
+    if session is None:
+        raise HTTPException(status_code=404, detail="Session not found or expired")
+
+    return SessionState(
+        session_id=session.id,
+        current_index=session.current_index,
+        total_questions=session.total_questions,
+        is_complete=session.is_complete,
     )
 
 

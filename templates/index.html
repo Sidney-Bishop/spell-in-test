@@ -43,6 +43,24 @@
             <button id="btn-start" class="primary">Start the test</button>
         </section>
 
+        <!-- Resume screen: shown when a saved session is detected -->
+        <section id="screen-resume" class="screen">
+            <h1>Welcome back</h1>
+            <p class="subtitle">A test in progress was found on this device.</p>
+
+            <div class="resume-details">
+                <p>You were on question <strong id="resume-position">?</strong> of
+                   <strong id="resume-total">?</strong>.</p>
+                <p>You can pick up where you left off, or start a new test from the
+                   beginning.</p>
+            </div>
+
+            <div class="resume-actions">
+                <button id="btn-resume" class="primary">Resume test</button>
+                <button id="btn-restart" class="secondary">Start a new test</button>
+            </div>
+        </section>
+
         <!-- Test screen: shown during the test -->
         <section id="screen-test" class="screen" aria-live="polite">
             <div class="progress" aria-live="polite">
